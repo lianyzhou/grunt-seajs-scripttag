@@ -40,7 +40,8 @@ module.exports = function(grunt) {
       regex : "App\\.loadPageScript\\(['\"](.*?)['\"]\\)",
       index : 1,
       pathPre:"/resources/scripts/",
-      scriptDir : "dist/scripts"
+      scriptDir : "dist/scripts",
+      version : "?ver={{=it.version}}"
     });
     var regex ;
     if(typeof options.regex === 'string') {
@@ -48,7 +49,12 @@ module.exports = function(grunt) {
     } else if(Object.prototype.toString.call(options.regex) === '[object RegExp]') {
       regex = options.regex;
     }
-
+    var version;
+    if(typeof options.version === 'string') {
+      version = options.version;
+    } else if(options.version === 'function'){
+      version = options.version();
+    }
     var splitCount = 0;
 
     //对每一个文件都进行该操作
@@ -90,7 +96,7 @@ module.exports = function(grunt) {
               for(var i = 0, len = scriptFileList.length ; i < len ; i++) {
                 var obj = scriptFileList[i];
                 for(var j = 1, jLen = obj.maxNum ; j <= jLen ; j++) {
-                    addedLines.push('<script src="' + options.pathPre + obj.scriptPath +  j + '.js"></script>');
+                    addedLines.push('<script src="' + options.pathPre + obj.scriptPath +  j + '.js' + (version || '') + '"></script>');
                 }
               }
               addedLines.unshift(0);
