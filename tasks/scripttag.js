@@ -41,7 +41,8 @@ module.exports = function(grunt) {
       index : 1,
       pathPre:"/resources/scripts/",
       scriptDir : "dist/scripts",
-      version : "?ver={{=it.version}}"
+      version : "?ver={{=it.version}}",
+      exclude : "/async/"
     });
     var regex ;
     if(typeof options.regex === 'string') {
@@ -56,7 +57,8 @@ module.exports = function(grunt) {
       version = options.version();
     }
     var splitCount = 0;
-
+    //排除的文件
+    var exclude = options.exclude;
     //对每一个文件都进行该操作
     this.files.forEach(function(f) {
 
@@ -74,12 +76,14 @@ module.exports = function(grunt) {
 
             if(ret) {
               var scriptPath = ret[options.index];
-              var maxNum = findMaxFileNum(options.scriptDir , scriptPath);
-              scriptFileList.push({
-                idx : lineCount,
-                scriptPath : scriptPath,
-                maxNum : maxNum
-              });
+              if(!exclude || scriptPath.indexOf(exclude) < 0) {
+                var maxNum = findMaxFileNum(options.scriptDir , scriptPath);
+                scriptFileList.push({
+                  idx : lineCount,
+                  scriptPath : scriptPath,
+                  maxNum : maxNum
+                });
+              }
             }
             lineCount++;
           });

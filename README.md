@@ -79,6 +79,12 @@ you can specify the version of the script file.
 
 if type is function , it will be the return value of the function
 
+#### options.exclude
+Default value: `'/async/'`
+
+Type: `String`
+
+you can specify the string to exclude import script tag , if the path is page/async/invite , and exclude is /async/ , it will skip this path.
 
 
 
@@ -94,7 +100,8 @@ grunt.initConfig({
               index : 1,
               pathPre:"/resources/scripts/",
               scriptDir : path.resolve(__dirname , "dist/scripts"),
-              version : "?ver={{=it.version}}"
+              version : "?ver={{=it.version}}",
+              exclude : "/async/"
           },
           files : [{
               cwd : '<%= yeoman.views %>',
